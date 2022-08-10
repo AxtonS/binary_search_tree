@@ -7,6 +7,10 @@ class Node
   attr_accessor :data, :left, :right
 
   include Comparable
+  def <=>(other)
+    data <=> other.data
+  end
+
   def initialize(data, left = nil, right = nil)
     @data = data
     @left = left
@@ -32,17 +36,14 @@ class Tree
   end
 
   def insert(value, node = @root)
-    if node.nil?
-      Node.new(value)
-    elsif value < node.data
+    return Node.new(value) if node.nil?
+
+    if value < node.data
       node.left = insert(value, node.left)
-      node
     elsif value > node.data
       node.right = insert(value, node.right)
-      node
-    else
-      node
     end
+    node
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
@@ -54,6 +55,7 @@ end
 
 array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 tree = Tree.new(array)
-tree.pretty_print
+tree.insert(6)
+p tree.root > tree.root.left
 
-p tree.root.right
+tree.pretty_print
