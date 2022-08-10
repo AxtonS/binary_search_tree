@@ -24,7 +24,6 @@ class Tree
 
   def initialize(array)
     sort = array.uniq.sort
-    p sort
     @root = build_tree(sort)
   end
 
@@ -57,13 +56,13 @@ class Tree
       return node.right if node.left.nil?
       return node.left if node.right.nil?
 
-      node.data = min_value(node.right)
+      node.data = minimum(node.right)
       node.right = delete(node.data, node.right)
     end
     node
   end
 
-  def min_value(node = @root)
+  def minimum(node = @root)
     min = node.data
     node = node
     until node.left.nil?
@@ -71,6 +70,18 @@ class Tree
       node = node.left
     end
     min
+  end
+
+  def find(value, node = @root)
+    return node if node.nil?
+
+    if value < node.data
+      find(value, node.left)
+    elsif value > node.data
+      find(value, node.right)
+    else
+      node
+    end
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
@@ -82,6 +93,6 @@ end
 
 array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 tree = Tree.new(array)
-tree.delete(67)
+p tree.find(6345).data
 
 tree.pretty_print
