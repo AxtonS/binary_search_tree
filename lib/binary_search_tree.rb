@@ -4,13 +4,13 @@ require 'pry-byebug'
 
 # builds node objects to populate binary search tree
 class Node
-  attr_accessor :data, :left_child, :right_child
+  attr_accessor :data, :left, :right
 
   include Comparable
-  def initialize(data, left_child = nil, right_child = nil)
+  def initialize(data, left = nil, right = nil)
     @data = data
-    @left_child = left_child
-    @right_child = right_child
+    @left = left
+    @right = right
   end
 end
 
@@ -35,16 +35,25 @@ class Tree
     if node.nil?
       Node.new(value)
     elsif value < node.data
-      node.left_child = insert(value, node.left_child)
+      node.left = insert(value, node.left)
       node
     elsif value > node.data
-      node.right_child = insert(value, node.right_child)
+      node.right = insert(value, node.right)
+      node
+    else
       node
     end
   end
+
+  def pretty_print(node = @root, prefix = '', is_left = true)
+    pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
+    puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
+    pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
+  end
 end
 
-array = [1,7,7,3,11,1,2,3,4,5,6,6,6]
+array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 tree = Tree.new(array)
-tree.insert(400)
-p tree.root.data
+tree.pretty_print
+
+p tree.root.right
