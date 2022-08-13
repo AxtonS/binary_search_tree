@@ -84,6 +84,20 @@ class Tree
     end
   end
 
+  def level_order
+    queue = [@root]
+    array = []
+    until queue.empty?
+      queue.push << queue[0].left unless queue[0].left.nil?
+      queue.push << queue[0].right unless queue[0].right.nil?
+      array.push << queue.shift
+    end
+    if block_given?
+      return array.map { |node| yield node }
+    end
+    array.map { |node| node.data }
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
@@ -93,6 +107,3 @@ end
 
 array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 tree = Tree.new(array)
-p tree.find(6345).data
-
-tree.pretty_print
