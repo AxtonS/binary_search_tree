@@ -132,6 +132,18 @@ class Tree
     array.flatten.map { |node| node.data }
   end
 
+  def height(node = @root)
+    return 0 if node.nil?
+
+    left = height(node.left)
+    right = height(node.right)
+    if left > right
+      return left + 1
+    else
+      right + 1
+    end
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
@@ -142,4 +154,4 @@ end
 array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 tree = Tree.new(array)
 puts tree.pretty_print
-puts tree.postorder
+puts tree.height
