@@ -64,7 +64,6 @@ class Tree
 
   def minimum(node = @root)
     min = node.data
-    node = node
     until node.left.nil?
       min = node.left.data
       node = node.left
@@ -98,6 +97,41 @@ class Tree
     array.map { |node| node.data }
   end
 
+  def preorder(node = @root)
+    array = [node]
+    array.push << preorder(node.left) unless node.left.nil?
+    array.push << preorder(node.right) unless node.right.nil?
+    if block_given?
+      return array.map { |node| yield node }
+    end
+    return array unless node == @root
+    array.flatten.map { |node| node.data }
+  end
+
+  def inorder(node = @root)
+    array = []
+    array.push << inorder(node.left) unless node.left.nil?
+    array.push node
+    array.push << inorder(node.right) unless node.right.nil?
+    if block_given?
+      return array.map { |node| yield node }
+    end
+    return array unless node == @root
+    array.flatten.map { |node| node.data }
+  end
+
+  def postorder(node = @root)
+    array = []
+    array.push << postorder(node.right) unless node.right.nil?
+    array.push << postorder(node.left) unless node.left.nil?
+    array.push node
+    if block_given?
+      return array.map { |node| yield node }
+    end
+    return array unless node == @root
+    array.flatten.map { |node| node.data }
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
@@ -107,3 +141,5 @@ end
 
 array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 tree = Tree.new(array)
+puts tree.pretty_print
+puts tree.postorder
