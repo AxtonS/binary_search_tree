@@ -144,6 +144,18 @@ class Tree
     end
   end
 
+  def depth(node, root = @root, count = 1)
+    return 0 if node.nil?
+
+    if node.data < root.data
+      count = depth(node, root.left, count += 1)
+    elsif node.data > root.data
+      count = depth(node, root.right, count += 1)
+    else
+      count
+    end
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
@@ -154,4 +166,4 @@ end
 array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 tree = Tree.new(array)
 puts tree.pretty_print
-puts tree.height
+puts tree.depth(tree.find(4))
