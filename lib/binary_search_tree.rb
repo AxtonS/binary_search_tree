@@ -176,13 +176,33 @@ class Tree
   end
 end
 
-array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
-tree = Tree.new(array)
+tree = Tree.new(Array.new(rand(1...9)) { rand(1...99) })
+if tree.balanced?
+  puts "Binary search tree is balanced."
+else
+  puts "Binary search tree is not balanced."
+end
 puts tree.pretty_print
-tree.delete(5)
-tree.delete(7)
-tree.delete(1)
-tree.delete(3)
+puts "Level order breadth first search: #{tree.level_order}"
+puts "Pre order depth first search: #{tree.preorder}"
+puts "In order depth first search: #{tree.inorder}"
+puts "Post order depth first search: #{tree.postorder}"
+rand(1...9).times { tree.insert(rand(100...999)) }
+puts ''
+if tree.balanced?
+  puts "Binary search tree is balanced."
+else
+  puts "Binary search tree is not balanced."
+end
 puts tree.pretty_print
-puts tree.rebalance
+tree.rebalance
+if tree.balanced?
+  puts "Binary search tree is balanced."
+else
+  puts "Binary search tree is not balanced."
+end
 puts tree.pretty_print
+puts "Level order breadth first search: #{tree.level_order}"
+puts "Pre order depth first search: #{tree.preorder}"
+puts "In order depth first search: #{tree.inorder}"
+puts "Post order depth first search: #{tree.postorder}"
